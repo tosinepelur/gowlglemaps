@@ -1,0 +1,755 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Gowlgle Maps</title>
+	<link rel="icon" 
+      type="image/png" 
+      href="icon.png">
+    <!-- Disallow users to scale this page -->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        /* Allow the canvas to use the full height and have no margins */
+        html, body, #map-canvas {
+            height: 100%;
+            margin: 0
+        }
+    </style>
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-9272361110552182",
+          enable_page_level_ads: true
+     });
+	 </script>
+</head>
+<body>
+    
+<!-- The container the map is rendered in -->
+<div id="map-canvas"></div>
+
+<!-- Load all javascript -->
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyCQBa4hP-uF__yz8hGfoVZKqiKtUVA1iDs"></script>
+<script src="js/SanMap.min.js"></script>
+<script>
+	/*
+	 * Define the map types we will be using.
+	 *
+	 * SanMapType parameters: minZoom, maxZoom, getTileUrlFunction, [optional]tileSize.
+	 *
+	 * The default value for tileSize is 512.
+	 */
+	 
+    var strType = new SanMapType(0, 2, function (zoom, x, y) {
+        return x == -1 && y == -1 
+		? "tiles/str.outer.png" 
+		: "tiles/str." + zoom + "." + x + "." + y + ".png";//Where the tiles are located
+    });
+	
+    var satType = new SanMapType(0, 3, function (zoom, x, y) {
+        return x == -1 && y == -1 
+		? "tiles/sat.outer.png" 
+		: "tiles/sat." + zoom + "." + x + "." + y + ".png";//Where the tiles are located
+    });
+	
+	/*
+	 * Create the map.
+	 *
+	 * createMap parameters: canvas, mapTypes, [optional]defaultZoomLevel, 
+	 *     [optional]defaultLocation, [optional]allowRepeating, [optional]defaultMapType.
+	 *
+	 * The default value for defaultZoomLevel is 2.
+	 * The default value for defaultLocation is null.
+	 * The default value for allowRepeating is false.
+	 * The default value for defaultMapType is the first key in mapTypes.
+	 */
+    var map = SanMap.createMap(document.getElementById('map-canvas'), 
+		{'Map': strType, 'Satellite': satType}, 2, {lng: -1425, lat: -45}, false, 'Satellite');
+
+	/*
+	 *
+	 * The above code contain methods SanMap provide
+	 * From here on forth we only use methods provided by the Google API
+	 *
+	 */
+	
+	/* Create a basic marker near the Pershing Square bank.
+	 * When you click on this marker, a info window is shown.
+	 */
+	 
+	 /*
+	 *Rodeo bank
+	 */
+	var mainbankInfoWindow = new google.maps.InfoWindow({
+		content: '<h3>597 West Broadway</h3><p><b>Credit & Commerce Bank of Los Santos</b></p><p>Here is the main office of the bank.</p>'
+	});
+	var mainbankMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(597.072265625, -1249.517578125),
+		map: map,
+		icon: 'htaccess/icons/icon_52.gif'
+	});
+	google.maps.event.addListener(mainbankMarker, 'click', function() {
+		map.setCenter(mainbankMarker.position);
+		mainbankInfoWindow.open(map,mainbankMarker);
+	});
+	
+	/*
+	*Verona Mall Bank
+	*/
+	 var mallbankInfoWindow = new google.maps.InfoWindow({
+		content: '<h3>1121 Pasadena Boulevard</h3><p><b>Credit & Commerce Bank of Los Santos - Verona Mall Branch</b></p><p>Verona Mall Branch of the local bank.</p>'
+	});
+	var mallbankMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1175.0692138672, -1439.5705566406),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/6/61/Icon_52.gif'
+	});
+	google.maps.event.addListener(mallbankMarker, 'click', function() {
+		map.setCenter(mallbankMarker.position);
+		mallbankInfoWindow.open(map,mallbankMarker);
+	});
+	
+	/*
+	*DUPONT
+	*/
+	var dupontInfoWindow = new google.maps.InfoWindow({
+		content: '<h3>1457 Western Avenue</h3><p><b>Dupont Corporation</b></p><p>Get custom and default skins created by your or others here!</p>'
+	});
+	var dupontMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(606.7314453125, -1457.3525390625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/9/9d/Icon_45.gif'
+	});
+	google.maps.event.addListener(dupontMarker, 'click', function() {
+		map.setCenter(dupontMarker.position);
+		dupontInfoWindow.open(map,dupontMarker);
+	});
+	
+	
+	/*
+	*PD
+	*/
+	var PDInfoWindow = new google.maps.InfoWindow({
+		content: '<h3>1 Pershing Square</h3><p><b>Los Santos Police Department Headquarters</b></p><p>Pay off your fines or be brought to jail.</p>'
+	});
+	var PDMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1555.494140625, -1675.8330078125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/a/a0/Icon_30.gif'
+	});
+	google.maps.event.addListener(PDMarker, 'click', function() {
+		map.setCenter(PDMarker.position);
+		PDInfoWindow.open(map,PDMarker);
+	});
+	
+	/*
+	*SASP
+	*/
+	 var saspInfoWindow = new google.maps.InfoWindow({
+		content: '<h3>408 North Main Street</h3><p><b>San Andreas State Police Barracks B</b></p><p>Barracks of the State Troopers.</p>'
+	});
+	var saspMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1374.201171875, 405.205078125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/a/a0/Icon_30.gif'
+	});
+	google.maps.event.addListener(saspMarker, 'click', function() {
+		map.setCenter(saspMarker.position);
+		saspInfoWindow.open(map,saspMarker);
+	});
+
+	 /*
+	 *CPQL
+	 */
+	 var cityhallInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>1 South San Andreas Boulevard</h3><p><b>Consilium Populusque Los Santos - County Hall</b></p><p>Get a job, renew your ID right here!</p>"
+	});
+	var cityhallMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1481.0107421875, -1772.30078125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/4/48/Icon_41.gif'
+	});
+	google.maps.event.addListener(cityhallMarker, 'click', function() {
+		map.setCenter(cityhallMarker.position);
+		cityhallInfoWindow.open(map,cityhallMarker);
+	});
+	
+	/*
+	*Bookstore
+	*/
+	var bookInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>842 North Panopticon Avenue</h3><p><b>The Book Emporium</b></p><p>Purchase your dictionaries, road law books, chemistry books and other here!</p>"
+	});
+	var bookMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(841.2138671875, -1596.7880859375),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/b/bc/Icon_58.gif'
+	});
+	google.maps.event.addListener(bookMarker, 'click', function() {
+		map.setCenter(bookMarker.position);
+		bookInfoWindow.open(map,bookMarker);
+	});
+	 
+	 /*
+	 *DMV
+	 */
+	 var dmvInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>1795 Constitution Avenue</h3><p><b>Department of Motor Vehicles</b></p><p>Get your driver's license or sell a vehicle here!</p>"
+	});
+	var dmvMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1111.7587890625, -1795.326171875),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/7/7b/Icon_36.gif'
+	});
+	google.maps.event.addListener(dmvMarker, 'click', function() {
+		map.setCenter(dmvMarker.position);
+		dmvInfoWindow.open(map,dmvMarker);
+	});
+	
+	/*
+	*SEMC
+	*/
+	var ashInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>1 Saint Street</h3><p><b>Saint Ernest Medical Center, South Campus</b></p><p>Have a medical checkup or get fixed up after crashing your car ;)</p>"
+	});
+	var ashMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1172.181640625, -1323.0556640625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/7/73/Icon_22.gif'
+	});
+	google.maps.event.addListener(ashMarker, 'click', function() {
+		map.setCenter(ashMarker.position);
+		ashInfoWindow.open(map,ashMarker);
+	}); 
+	
+	/*
+	*DPS
+	*/
+	 var fdInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>East Vinewood</h3><p><b>Department of Public Safety - Station 1</b></p><p>Headquarters of the local emergency services.</p>"
+	});
+	var fdMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1712.044921875, -1129.6923828125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/0/03/Icon_20.gif'
+	});
+	google.maps.event.addListener(fdMarker, 'click', function() {
+		map.setCenter(fdMarker.position);
+		fdInfoWindow.open(map,fdMarker);
+	}); 
+	/*
+	*DPS Dillimore
+	*/
+	 var fd2InfoWindow = new google.maps.InfoWindow({
+		content: "<h3>571 Cress Street</h3><p><b>Department of Public Safety - Dillimore Station</b></p><p>Dillimore division of the local emergency services.</p>"
+	});
+	var fd2Marker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(626.96484375, -571.919921875),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/0/03/Icon_20.gif'
+	});
+	google.maps.event.addListener(fd2Marker, 'click', function() {
+		map.setCenter(fd2Marker.position);
+		fd2InfoWindow.open(map,fd2Marker);
+	}); 
+	
+	 /*
+	 *Crusher
+	 */
+	var crushInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Pacific Avenue</h3><p><b>Car Crusher</b></p><p>Sell your wheeled vehicle for scrap metal price here!</p>"
+	});
+	var crushMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2192.1865234375, -1976.7548828125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/5b/Icon_11.gif'
+	});
+	google.maps.event.addListener(crushMarker, 'click', function() {
+		map.setCenter(crushMarker.position);
+		crushInfoWindow.open(map,crushMarker);
+	});
+	
+	/*
+	*Boat Crusher
+	*/
+	 var bcrushInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Pacific Avenue</h3><p><b>Car Crusher</b></p><p>Sell your boat for scrap metal price here!</p>"
+	});
+	var bcrushMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2253.9545898438, -2769.8579101562),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/5b/Icon_11.gif'
+	});
+	google.maps.event.addListener(bcrushMarker, 'click', function() {
+		map.setCenter(bcrushMarker.position);
+		bcrushInfoWindow.open(map,bcrushMarker);
+	});
+	
+	/*
+	*Airport Terminals
+	*/
+	var lsiaInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Truman South</h3><p><b>Los Santos International Airport terminals</b></p><p>Catch a plane!</p>"
+	});
+	var lsiaMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1642.0263671875, -2335.4853515625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/9/9c/Icon_5.gif'
+	});
+	google.maps.event.addListener(lsiaMarker, 'click', function() {
+		map.setCenter(lsiaMarker.position);
+		lsiaInfoWindow.open(map,lsiaMarker);
+	});
+	
+	/*
+	*BoTS
+	*/
+	var botsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Pacific Avenue</h3><p><b>Bureau of Traffic Services</b></p><p>Collect your impounded vehicle here!</p>"
+	});
+	var botsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2685.232421875, -2536.974609375),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/f/f0/Icon_34.gif'
+	});
+	google.maps.event.addListener(botsMarker, 'click', function() {
+		map.setCenter(botsMarker.position);
+		botsInfoWindow.open(map,botsMarker);
+	});
+	
+	/*
+	*SAN
+	
+	*var sanInfoWindow = new google.maps.InfoWindow({
+	*	content: "<h3>1833 East Metropolitan Avenue</h3><p><b>San Andreas Network Headquarters</b></p><p>Source of your phone connection & news!</p>"
+	*});
+	*var sanMarker = new google.maps.Marker({
+	*	position: SanMap.getLatLngFromPos(1675.4365234375, -1633.0361328125),
+	*	map: map,
+	*	icon: 'http://wiki.sa-mp.com/wroot/images2/2/24/Icon_37.gif'
+	*});
+	*google.maps.event.addListener(sanMarker, 'click', function() {
+	*	map.setCenter(sanMarker.position);
+	*	sanInfoWindow.open(map,sanMarker);
+	*});
+	*/
+	
+	/*
+	*AutoNation - Kayla
+	
+	* var kaylaInfoWindow = new google.maps.InfoWindow({
+	*	content: "<h3>Interstate 425 West</h3><p><b>Autonation Incorporated</b></p><p>Nation of Cars! - Vehicle store ((player run))</p>"
+	*});
+	*var kaylaMarker = new google.maps.Marker({
+	*	position: SanMap.getLatLngFromPos(822.5556640625, -1756.6015625),
+	*	map: map,
+	*	icon: 'http://wiki.sa-mp.com/wroot/images2/3/31/Icon_27.gif'
+	*});
+	*google.maps.event.addListener(kaylaMarker, 'click', function() {
+	*	map.setCenter(kaylaMarker.position);
+	*	kaylaInfoWindow.open(map,kaylaMarker);
+	*});
+	*/
+	
+	/*
+	*PAY AND SPRAYS
+	*/
+	var santapnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Interstate 425 West</h3><p><b>PAY 'N' SPRAY</b></p><p> Santa Maria Beach Pay 'N' Spray</p>"
+	});
+	var santapnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(487.404296875, -1741.5947265625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(santapnsMarker, 'click', function() {
+		map.setCenter(santapnsMarker.position);
+		santapnsInfoWindow.open(map,santapnsMarker);
+	});
+	
+	var vgspnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>West Broadway</h3><p><b>PAY 'N' SPRAY</b></p><p> Vinewood Gas Station's Pay 'N' Spray</p>"
+	});
+	var vgspnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1017.4091796875, -916.6015625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(vgspnsMarker, 'click', function() {
+		map.setCenter(vgspnsMarker.position);
+		vgspnsInfoWindow.open(map,vgspnsMarker);
+	});
+
+	var templepnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>West Vinewood</h3><p><b>PAY 'N' SPRAY</b></p><p>Temple Pay 'N' Spray</p>"
+	});
+	var templepnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1025.1748046875, -1024.396484375),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(templepnsMarker, 'click', function() {
+		map.setCenter(templepnsMarker.position);
+		templepnsInfoWindow.open(map,templepnsMarker);
+	});
+	 
+	var igspnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>1927 South San Andreas Boulevard</h3><p><b>PAY 'N' SPRAY</b></p><p>Idlewood Gas Station's Pay 'N' Spray</p>"
+	});
+	var igspnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1911.1611328125, -1778.03515625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(igspnsMarker, 'click', function() {
+		map.setCenter(igspnsMarker.position);
+		igspnsInfoWindow.open(map,igspnsMarker);
+	});
+	 
+	var ipspnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Washington Street</h3><p><b>PAY 'N' SPRAY</b></p><p>Idlewood Pay 'N' Spray</p>"
+	});
+	var ipspnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2063.0361328125, -1831.4248046875),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(ipspnsMarker, 'click', function() {
+		map.setCenter(ipspnsMarker.position);
+		ipspnsInfoWindow.open(map,ipspnsMarker);
+	});
+	
+	var wgspnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>1905 Atlantica Avenue</h3><p><b>PAY 'N' SPRAY</b></p><p>Willowfield Pay 'N' Spray</p>"
+	});
+	var wgspnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2382.99609375, -1927.2470703125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(wgspnsMarker, 'click', function() {
+		map.setCenter(wgspnsMarker.position);
+		wgspnsInfoWindow.open(map,wgspnsMarker);
+	});
+	
+	var pcpnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Maple Street</h3><p><b>PAY 'N' SPRAY</b></p><p>Palomino Creek Pay 'N' Spray</p>"
+	});
+	var pcpnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2414.0673828125, 86.8125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(pcpnsMarker, 'click', function() {
+		map.setCenter(pcpnsMarker.position);
+		pcpnsInfoWindow.open(map,pcpnsMarker);
+	});
+	
+	var mgpnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Veterans Memorial Highway 46</h3><p><b>PAY 'N' SPRAY</b></p><p>Montgomery Pay 'N' Spray</p>"
+	});
+	var mgpnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1393.8896484375, 465.5185546875),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(mgpnsMarker, 'click', function() {
+		map.setCenter(mgpnsMarker.position);
+		mgpnsInfoWindow.open(map,mgpnsMarker);
+	});
+	
+	var dmpnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Salem Street</h3><p><b>PAY 'N' SPRAY</b></p><p>Dillimore Pay 'N' Spray</p>"
+	});
+	var dmpnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(719.7666015625, -455.2734375),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(dmpnsMarker, 'click', function() {
+		map.setCenter(dmpnsMarker.position);
+		dmpnsInfoWindow.open(map,dmpnsMarker);
+	});
+
+	var rspnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Interstate 89</h3><p><b>PAY 'N' SPRAY</b></p><p>Flint County Pay 'N' Spray</p>"
+	});
+	var rspnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(-71.7373046875, -1182.9140625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(rspnsMarker, 'click', function() {
+		map.setCenter(rspnsMarker.position);
+		rspnsInfoWindow.open(map,rspnsMarker);
+	});
+
+	var appnsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Angel Pine Road</h3><p><b>PAY 'N' SPRAY</b></p><p>Angel Pine Pay 'N' Spray</p>"
+	});
+	var appnsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(-2235.669921875, -2572.2470703125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/d/db/Icon_63.gif'
+	});
+	google.maps.event.addListener(appnsMarker, 'click', function() {
+		map.setCenter(appnsMarker.position);
+		appnsInfoWindow.open(map,appnsMarker);
+	});
+	/*END of pay and sprays-------------------------------------------------------------*/
+	
+	/*
+	*GAS STATIONS
+	*/
+	
+	var rodeogasInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>1513 Western Avenue</h3><p><b>KB's Gas - Rodeo Establishment</b></p><p> Rodeo Gas Station</p>"
+	});
+	var rodeogasMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(607.5654296875, -1515.068359375),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(rodeogasMarker, 'click', function() {
+		map.setCenter(rodeogasMarker.position);
+		rodeogasInfoWindow.open(map,rodeogasMarker);
+	});
+	
+	var marketgasInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>1013 North Rodeo Drive</h3><p><b>KB's Gas - Market Establishment</b></p><p> Market Gas Station</p>"
+	});
+	var marketgasMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1013.8046875, -1363.5029296875),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(marketgasMarker, 'click', function() {
+		map.setCenter(marketgasMarker.position);
+		marketgasInfoWindow.open(map,marketgasMarker);
+	});
+	 
+	 var vgsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>West Broadway</h3><p><b>A1 Gas Station</b></p><p> Vinewood Gas Station</p>"
+	});
+	var vgsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1000.4482421875, -919.8310546875),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(vgsMarker, 'click', function() {
+		map.setCenter(vgsMarker.position);
+		vgsInfoWindow.open(map,vgsMarker);
+	});
+	
+	var igsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>1927 South San Andreas Boulevard</h3><p><b>Idlewood Gas Station</b></p><p>Idlewood Gas Station</p>"
+	});
+	var igsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1927.197265625, -1779.5859375),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(igsMarker, 'click', function() {
+		map.setCenter(igsMarker.position);
+		igsInfoWindow.open(map,igsMarker);
+	});
+	
+	var lsiagasInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Republican Avenue</h3><p><b>Los Santos International Airport Gas Station</b></p><p>Gas Station for your aircraft.</p>"
+	});
+	var lsiagasMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1974.787109375, -2252.6396484375),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(lsiagasMarker, 'click', function() {
+		map.setCenter(lsiagasMarker.position);
+		lsiagasInfoWindow.open(map,lsiagasMarker);
+	});
+
+	var wgsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>1905 Atlantica Avenue</h3><p><b>KB's Gas - Willowfield Establishment</b></p><p>Willowfield Gas Station</p>"
+	});
+	var wgsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2382.4970703125, -1909.720703125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(wgsMarker, 'click', function() {
+		map.setCenter(wgsMarker.position);
+		wgsInfoWindow.open(map,wgsMarker);
+	});
+	
+	var pcgsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>2249 Palomino Road</h3><p><b>Palomino Gas Station</b></p><p>Palomino Creek Gas Station</p>"
+	});
+	var pcgsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2248.1533203125, 28.728515625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(pcgsMarker, 'click', function() {
+		map.setCenter(pcgsMarker.position);
+		pcgsInfoWindow.open(map,pcgsMarker);
+	});
+	
+	var mggsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Veterans Memorial Highway 46</h3><p><b>KB's Gas - Montgomery Establishment</b></p><p>Montgomery Gas Station</p>"
+	});
+	var mggsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1383.0439453125, 465.513671875),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(mggsMarker, 'click', function() {
+		map.setCenter(mggsMarker.position);
+		mggsInfoWindow.open(map,mggsMarker);
+	});
+	
+	var dmgsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>574 Cress Street</h3><p><b>KB's Gas - Dillimore Establishment</b></p><p>Dillimore Gas Station</p>"
+	});
+	var dmgsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(661.1943359375, -573.8515625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(dmgsMarker, 'click', function() {
+		map.setCenter(dmgsMarker.position);
+		dmgsInfoWindow.open(map,dmgsMarker);
+	});
+
+	var rsgsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Interstate 89</h3><p><b>KB's Gas - RS Haul Establishment</b></p><p>Flint County Gas Station</p>"
+	});
+	var rsgsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(-78.376953125, -1169.91015625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(rsgsMarker, 'click', function() {
+		map.setCenter(dmgsMarker.position);
+		rsgsInfoWindow.open(map,rsgsMarker);
+	});
+	
+	var apgsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Angel Pine Road</h3><p><b>Angel Pine Gas Station</b></p><p>Angel Pine Gas Station</p>"
+	});
+	var apgsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(-2231.2802734375, -2557.875),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(apgsMarker, 'click', function() {
+		map.setCenter(apgsMarker.position);
+		apgsInfoWindow.open(map,apgsMarker);
+	});
+
+	var whetgsInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Interstate 27</h3><p><b>Sinclair Gas station & Market - Angel Pine</b></p><p>Whetstone Gas Station</p>"
+	});
+	var whetgsMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(-1623.8115234375, -2693.0400390625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/5/58/Icon_55.gif'
+	});
+	google.maps.event.addListener(whetgsMarker, 'click', function() {
+		map.setCenter(whetgsMarker.position);
+		whetgsInfoWindow.open(map,whetgsMarker);
+	});
+	/*END of gas stations-------------------------------------------------------------*/
+	
+	/*
+	*VEHICLE STORES
+	*/
+	
+	var boatshopInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Santa Maria Beach Lighthouse</h3><p><b>Santa Maria Boat Shop</b></p><p> Purchase your seacraft here!</p>"
+	});
+	var boatshopMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(160.5458984375, -1928.9951171875),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/1/15/Icon_56.gif'
+	});
+	google.maps.event.addListener(boatshopMarker, 'click', function() {
+		map.setCenter(boatshopMarker.position);
+		boatshopInfoWindow.open(map,boatshopMarker);
+	});
+	
+	var rodeoshopInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>West Broadway</h3><p><b>Grotti's Cars</b></p><p> Purchase your exotic cars here!</p>"
+	});
+	var rodeoshopMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(527.34765625, -1291.5537109375),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/1/15/Icon_56.gif'
+	});
+	google.maps.event.addListener(rodeoshopMarker, 'click', function() {
+		map.setCenter(rodeoshopMarker.position);
+		rodeoshopInfoWindow.open(map,rodeoshopMarker);
+	});
+	 
+	var bikeshopInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Washington Street</h3><p><b>Idlewood Bike Shop</b></p><p> Purchase your scooters, pedal-, motor- or quadbikes here!</p>"
+	});
+	var bikeshopMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(1885.0146484375, -1842.2587890625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/1/15/Icon_56.gif'
+	});
+	google.maps.event.addListener(bikeshopMarker, 'click', function() {
+		map.setCenter(bikeshopMarker.position);
+		bikeshopInfoWindow.open(map,bikeshopMarker);
+	});
+	 
+	var docksshopInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Harbor Road</h3><p><b>Sandro's Cars</b></p><p> Purchase your Low-Class motor vehicles here!</p>"
+	});
+	var docksshopMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2113.1064453125, -2129.962890625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/1/15/Icon_56.gif'
+	});
+	google.maps.event.addListener(docksshopMarker, 'click', function() {
+		map.setCenter(docksshopMarker.position);
+		docksshopInfoWindow.open(map,docksshopMarker);
+	});
+	
+	var industshopInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>Harbor Road</h3><p><b>Industrial Vehicle Shop</b></p><p> Satisfy your need for industrial use vehicles here!</p>"
+	});
+	var industshopMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2117.8681640625, -2091.7236328125),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/1/15/Icon_56.gif'
+	});
+	google.maps.event.addListener(industshopMarker, 'click', function() {
+		map.setCenter(industshopMarker.position);
+		industshopInfoWindow.open(map,industshopMarker);
+	});
+	
+	var jefshopInfoWindow = new google.maps.InfoWindow({
+		content: "<h3>East Broadway</h3><p><b>Jefferson Car Shop</b></p><p>Buy your middle-class vehicles here.</p>"
+	});
+	var jefshopMarker = new google.maps.Marker({
+		position: SanMap.getLatLngFromPos(2126.849609375, -1140.853515625),
+		map: map,
+		icon: 'http://wiki.sa-mp.com/wroot/images2/1/15/Icon_56.gif'
+	});
+	google.maps.event.addListener(jefshopMarker, 'click', function() {
+		map.setCenter(jefshopMarker.position);
+		jefshopInfoWindow.open(map,jefshopMarker);
+	});
+
+	
+	/*END of dealers-------------------------------------------------------------*/
+
+	
+	
+	
+	//Uncomment to show an alert with the position when you click on the map
+	 google.maps.event.addListener(map, 'click', function(event) {
+			var pos = SanMap.getPosFromLatLng(event.latLng);
+            alert(pos.x + "," + pos.y);
+        });
+</script> 
+</body>
